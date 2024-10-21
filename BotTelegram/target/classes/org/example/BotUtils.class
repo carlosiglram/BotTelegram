@@ -1,0 +1,189 @@
+ ˛∫æ   4¯
+      java/lang/Object <init> ()V  java/lang/StringBuilder
+    org/example/BotUtils  ]https://api.telegram.org/bot***_TELEGRAM_BOT_TOKEN_***/getUpdates?offset=
+     append -(Ljava/lang/String;)Ljava/lang/StringBuilder;	 
+    offset J
+     (J)Ljava/lang/StringBuilder;
+     toString ()Ljava/lang/String;  java/net/URL
+     ! (Ljava/lang/String;)V
+  # $ % openConnection ()Ljava/net/URLConnection; ' java/net/HttpURLConnection ) GET
+ & + , ! setRequestMethod . Accept 0 application/json
+ & 2 3 4 setRequestProperty '(Ljava/lang/String;Ljava/lang/String;)V
+ & 6 7 8 getResponseCode ()I : java/io/BufferedReader < java/io/InputStreamReader
+ & > ? @ getInputStream ()Ljava/io/InputStream;
+ ; B  C (Ljava/io/InputStream;)V
+ 9 E  F (Ljava/io/Reader;)V
+ 9 H I  readLine
+ 9 K L  close N com/google/gson/Gson
+ M  Q org/example/entidades/Respuesta
+ M S T U fromJson 7(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;
+ P W X Y 	getResult ()Ljava/util/List; [ \ ] ^ _ java/util/List iterator ()Ljava/util/Iterator; a b c d e java/util/Iterator hasNext ()Z a g h i next ()Ljava/lang/Object; k org/example/entidades/Peticion
+ 
+ m n o procesarPeticion #(Lorg/example/entidades/Peticion;)V	 q r s t u java/lang/System out Ljava/io/PrintStream; w -Error en la solicitud. C√≥digo de respuesta: 
+  y  z (I)Ljava/lang/StringBuilder;
+ | } ~  ! java/io/PrintStream println
+ & Å Ç  
+disconnect Ñ java/lang/Exception
+ É Ü á  printStackTrace â  
+ j ã å ç 
+getMessage !()Lorg/example/entidades/Mensaje;
+ è ê ë í ì org/example/entidades/Mensaje getFrom #()Lorg/example/entidades/Remitente;
+ ï ñ ó ò ô org/example/entidades/Remitente getId ()J
+ è õ ú  getText û 2Se ha detectado una edici√≥n en un mensaje previo. † org/example/entidades/Envio
+ ü 
+ ü £ § • 
+setChat_id (J)V ß XFormato de mensaje no permitido.
+Escribe /help para ver las funcionalidades de este bot.
+ ü © ™ ! setText
+ 
+ ¨ ≠ Æ enviarMensaje  (Lorg/example/entidades/Envio;)V
+ j ∞ ± ô getUpdate_id ≥ 
+^/word .*$
+ µ ∂ ∑ ∏ π java/lang/String matches (Ljava/lang/String;)Z ª  
+ µ Ω æ ø split '(Ljava/lang/String;)[Ljava/lang/String;
+ µ ¡ ¬ 8 length
+ µ ƒ ≈ ∆ 	substring (I)Ljava/lang/String; » a
+ µ   À Ã equals (Ljava/lang/Object;)Z Œ src\txt\a.txt
+ 
+ – — “ leerTXT )(Ljava/lang/String;)Ljava/util/ArrayList;
+ 
+ ‘ ’ ÷ enviarPalabraTXT_XML (Ljava/util/ArrayList;J)V ÿ b ⁄ src\xml\b.xml
+ 
+ ‹ › “ leerXML ﬂ c · src\json\c.json
+ 
+ „ ‰ “ leerJSON
+ 
+ Ê Á ÷ enviarPalabra È d Î src\txt\d.txt Ì e Ô src\xml\e.xml Ò f Û src\json\f.json ı g ˜ src\txt\g.txt ˘ h ˚ src\xml\h.xml ˝ i ˇ src\json\i.json j src\txt\j.txt l src\xml\l.xml	 m src\json\m.json n src\txt\n.txt o src\xml\o.xml p src\json\p.json q src\txt\q.txt r src\xml\r.xml! s# src\json\s.json% t' src\txt\t.txt) u+ src\xml\u.xml- v/ src\json\v.json1 y3 src\txt\y.txt5 z7 src\xml\z.xml9 
+La letra '; "' no est√° contemplada por el bot.= ^/addword .* -.$
+ µ?@ e isEmptyB cNo se reconoce el comando.
+Escribe /help para ver la lista de comandos a los que responde este bot.
+ µDEF charAt (I)C
+ µHIJ valueOf (C)Ljava/lang/String;
+ 
+LM 4 addPalabraTXT
+ 
+OP 4 addPalabraXML
+ 
+RS 4 
+addPalabraU src\txt\y.jsonW Palabra Y 
+ a√±adida.[ 9La palabra introducida no comienza por la letra indicada.] /help_tLista de comandos:
+/word *palabra*: el bot devuelve una palabra que empieza por la letra por la que termina la palabra introducida por el usuario.
+/addword *palabra* -*letra*: el bot a√±ade la palabra introducida (palabra) a la lista de palabras indicada (letra).
+
+Ejemplos:
+/word sabor
+/addword sabor -s
+
+Nota: el bot no devolver√° palabras que empiecen por K, √ë, W y X.a /startc 7Escribe /help para ver las funcionalidades de este bot.e Vhttps://api.telegram.org/bot***_TELEGRAM_BOT_TOKEN_***/sendMessageg POSTi Content-Type
+ &klm setDoOutput (Z)V
+ Mopq toJson &(Ljava/lang/Object;)Ljava/lang/String;
+ &stu getOutputStream ()Ljava/io/OutputStream;w java/io/OutputStreamWriter	yz{|} !java/nio/charset/StandardCharsets UTF_8 Ljava/nio/charset/Charset;
+v Ä 3(Ljava/io/OutputStream;Ljava/nio/charset/Charset;)V
+vÇÉ ! write
+vÖÜ  flush
+v Kâ java/lang/Throwable
+àãåç addSuppressed (Ljava/lang/Throwable;)V
+è Kê java/io/OutputStreamí Env√≠o correctoî java/util/ArrayList
+ì ó java/io/FileReader
+ñ  
+ 9öõ e ready
+ìùû Ã add† java/io/File
+ü  £ java/io/FileOutputStream
+¢• ¶ (Ljava/io/File;Z)V
+v® © (Ljava/io/OutputStream;)V´ 
+
+≠ÆØ∞± java/lang/Math random ()D
+ì≥¥ 8 size
+≠∂∑∏ floor (D)D
+ì∫ªº get (I)Ljava/lang/Object;
+æø¿¡¬ (javax/xml/parsers/DocumentBuilderFactory newInstance ,()Ljavax/xml/parsers/DocumentBuilderFactory;
+æƒ≈∆ newDocumentBuilder %()Ljavax/xml/parsers/DocumentBuilder;
+»… ÀÃ !javax/xml/parsers/DocumentBuilder parse *(Ljava/lang/String;)Lorg/w3c/dom/Document;Œœ–—“ org/w3c/dom/Document getDocumentElement ()Lorg/w3c/dom/Element;‘ palabra÷◊ÿŸ⁄ org/w3c/dom/Element getElementsByTagName *(Ljava/lang/String;)Lorg/w3c/dom/NodeList;‹›ﬁﬂ 8 org/w3c/dom/NodeList 	getLength‹·‚„ item (I)Lorg/w3c/dom/Node;Â  org/example/entidades/PalabraXML
+‰ ËÈÍÎÏ org/w3c/dom/Node getChildNodes ()Lorg/w3c/dom/NodeList;ËÓÔ getNodeType ()SËÚÛÙ getFirstChild ()Lorg/w3c/dom/Node;Ëˆ˜  getNodeValueË˘˙  getNodeName¸ wordË˛ˇ  getTextContent
+‰ ! setWord‹ 
+ |  Œ	 createElement )(Ljava/lang/String;)Lorg/w3c/dom/Element;÷ appendChild &(Lorg/w3c/dom/Node;)Lorg/w3c/dom/Node;Œ createTextNode &(Ljava/lang/String;)Lorg/w3c/dom/Text;
+¡ &javax/xml/transform/TransformerFactory *()Ljavax/xml/transform/TransformerFactory;
+ newTransformer #()Ljavax/xml/transform/Transformer; javax/xml/transform/OutputKeys indent  yes
+"#$% 4 javax/xml/transform/Transformer setOutputProperty' ){http://xml.apache.org/xslt}indent-amount) 3+ !javax/xml/transform/dom/DOMSource
+*- . (Lorg/w3c/dom/Node;)V0 'javax/xml/transform/stream/StreamResult
+/2 3 (Ljava/io/File;)V
+"567 	transform ;(Ljavax/xml/transform/Source;Ljavax/xml/transform/Result;)V9 com/google/gson/GsonBuilder
+8 
+8<=> $excludeFieldsWithoutExposeAnnotation ()Lcom/google/gson/GsonBuilder;
+8@AB create ()Lcom/google/gson/Gson;D  [Lorg/example/entidades/Palabra;
+ MF TG 5(Ljava/io/Reader;Ljava/lang/Class;)Ljava/lang/Object;
+IJKLM java/util/Arrays asList %([Ljava/lang/Object;)Ljava/util/List;
+ìO P (Ljava/util/Collection;)V
+8RS> setPrettyPrintingU org/example/entidades/Palabra
+TWX  
+getPalabra
+T  
+ü[\ e createNewFile^ java/io/FileWriter
+]2
+ 
+abc escribirJSON )(Ljava/util/ArrayList;)Ljava/lang/String;
+]Ç
+] K 	BOT_TOKEN Ljava/lang/String; ConstantValuej .***_TELEGRAM_BOT_TOKEN_*** API_TELEGRAMm https://api.telegram.org/bot 
+METHOD_GET METHOD_POST PROPERTY_ACCEPT PROPERTY_APPLICATION_JSON PROPERTY_CONTENT_TYPE LOG_ERROR_SOLICITUD LOG_ENVIO_CORRECTO HTTP_CODE_OK I   » Code LineNumberTable LocalVariableTable this Lorg/example/BotUtils; procesarPeticiones peticion  Lorg/example/entidades/Peticion; in Ljava/io/BufferedReader; 	inputLine response Ljava/lang/StringBuilder; gson Lcom/google/gson/Gson; 	respuesta !Lorg/example/entidades/Respuesta; apiUrl url Ljava/net/URL; conn Ljava/net/HttpURLConnection; responseCode Ljava/lang/Exception; StackMapTable 	exception envio Lorg/example/entidades/Envio; listaA Ljava/util/ArrayList; listaB listaC listaD listaE listaF listaG listaH listaI listaJ listaL listaM listaO listaP listaR listaS listaT listaU listaV listaY listaZ [Ljava/lang/String; letra nuevaPalabra 
+nuevaLetra nueva destinatario texto LocalVariableTypeTable )Ljava/util/ArrayList<Ljava/lang/String;>; 6Ljava/util/ArrayList<Lorg/example/entidades/Palabra;>;™ 
+Exceptions∑ java/io/IOExceptionπ .javax/xml/parsers/ParserConfigurationExceptionª org/xml/sax/SAXExceptionΩ (javax/xml/transform/TransformerException osw Ljava/io/OutputStreamWriter; os Ljava/io/OutputStream; jsonMessage br ruta 
+palabraTXT 	Signature =(Ljava/lang/String;)Ljava/util/ArrayList<Ljava/lang/String;>; file Ljava/io/File; fOut Ljava/io/FileOutputStream; 	arrayList -(Ljava/util/ArrayList<Ljava/lang/String;>;J)V datoContenido Lorg/w3c/dom/Node; dato datosPalabra Lorg/w3c/dom/NodeList; coleccionPalabras arrayPalabras fabrica *Ljavax/xml/parsers/DocumentBuilderFactory; creadorDocumento #Ljavax/xml/parsers/DocumentBuilder; 	documento Lorg/w3c/dom/Document; raiz Lorg/w3c/dom/Element; listaPalabras 9Ljava/util/ArrayList<Lorg/example/entidades/PalabraXML;>; ePalabra eWord tf (Ljavax/xml/transform/TransformerFactory; transformer !Ljavax/xml/transform/Transformer; 	domSource #Ljavax/xml/transform/dom/DOMSource; 	resultado )Ljavax/xml/transform/stream/StreamResult; fr Ljava/io/FileReader; palabrasÌ java/io/FileNotFoundException J(Ljava/lang/String;)Ljava/util/ArrayList<Lorg/example/entidades/Palabra;>; json J(Ljava/util/ArrayList<Lorg/example/entidades/Palabra;>;)Ljava/lang/String; :(Ljava/util/ArrayList<Lorg/example/entidades/Palabra;>;J)V 
+ficheroNew fw Ljava/io/FileWriter; <clinit> 
+SourceFile BotUtils.java ! 
+     fg h   i kg h   l ng h    ( og h   f pg h    - qg h    / rg h   h sg h    v tg h   ë uv h   w          x   /     *∑ ±   y       $z       {|   	}  x  <     Êª Y∑ 	∂ ≤ ∂ ∂ Kª Y*∑ L+∂ "¿ &M,(∂ *,-/∂ 1,∂ 5> »† Çª 9Yª ;Y,∂ =∑ A∑ D:ª Y∑ 	:∂ GY:∆ ∂ WßˇÌ∂ Jª MY∑ O:∂ P∂ R¿ P:∂ Vπ Z :		π ` ô 	π f ¿ j:
+
+∏ lßˇÂß ≤ pª Y∑ 	v∂ ∂ x∂ ∂ {,∂ Äß K*∂ Ö±    › ‡ É y   b    6  7  8 ' 9 - : 5 = : ? A B U D ^ E i F t H y K Ç L ì O µ P ∫ Q Ω R ¿ S Ÿ W › Z ‡ X · Y Â [z   p  µ ~ 
+ U hÄÅ  f WÇg  ^ _ÉÑ  Ç ;ÖÜ  ì *áà   «âg    æäã  ' ∂åç  : £év  ·  Ìè  ê   ^ ˇ ^  µ  & 9    ˇ   µ  & 9 µ   ˛ * M P aˇ   µ  &  ˇ     É 	 n o x  ä  	  9	@àN*∂ ä∂ é∂ î@*∂ ä∂ öNß :≤ pù∂ {-« *ª üY∑ °:∂ ¢¶∂ ®∏ ´*∂ Ø
+a≥ ßÎ-≤∂ ¥ôû-∫∂ º:22∂ ¿d∂ √:«∂ …ô Õ∏ œ:∏ ”*∂ Ø
+a≥ ß^◊∂ …ô Ÿ∏ €:∏ ”*∂ Ø
+a≥ ß;ﬁ∂ …ô ‡∏ ‚:∏ Â*∂ Ø
+a≥ ßË∂ …ô Í∏ œ:∏ ”*∂ Ø
+a≥ ßıÏ∂ …ô Ó∏ €:∏ ”*∂ Ø
+a≥ ß“∂ …ô Ú∏ ‚:∏ Â*∂ Ø
+a≥ ßØÙ∂ …ô ˆ∏ œ:∏ ”*∂ Ø
+a≥ ßå¯∂ …ô ˙∏ €:∏ ”*∂ Ø
+a≥ ßi¸∂ …ô ˛∏ ‚:∏ Â*∂ Ø
+a≥ ßF ∂ …ô ∏ œ:∏ ”*∂ Ø
+a≥ ß!∂ …ô ∏ €:∏ ”*∂ Ø
+a≥ ß¸∂ …ô 
+∏ ‚:∏ Â*∂ Ø
+a≥ ß◊∂ …ô ∏ œ:∏ ”*∂ Ø
+a≥ ß≤∂ …ô ∏ €:∏ ”*∂ Ø
+a≥ ßç∂ …ô ∏ ‚:∏ Â*∂ Ø
+a≥ ßh∂ …ô ∏ œ:∏ ”*∂ Ø
+a≥ ßC∂ …ô ∏ €:∏ ”*∂ Ø
+a≥ ß ∂ …ô "∏ ‚:∏ Â*∂ Ø
+a≥ ß ˘$∂ …ô &∏ œ:∏ ”*∂ Ø
+a≥ ß ‘(∂ …ô *∏ €:∏ ”*∂ Ø
+a≥ ß Ø,∂ …ô .∏ ‚:∏ Â*∂ Ø
+a≥ ß ä0∂ …ô 2∏ œ:∏ ”*∂ Ø
+a≥ ß e4∂ …ô 6∏ €:∏ ”*∂ Ø
+a≥ ß @ª üY∑ °:∂ ¢ª Y∑ 	8∂ ∂ :∂ ∂ ∂ ®∏ ´*∂ Ø
+a≥ ßG-<∂ ¥ô¥-∫∂ º:2∂>ô +ª üY∑ °:∂ ¢A∂ ®∏ ´*∂ Ø
+a≥ ßw2:2∂C∏G:2∂C∏G:∂ ¥ô(«∂ ¥ô Õ∏Kß‘◊∂ ¥ô Ÿ∏Nß¿ﬁ∂ ¥ô ‡∏Qß¨Ë∂ ¥ô Í∏KßòÏ∂ ¥ô Ó∏NßÑ∂ ¥ô Ú∏QßpÙ∂ ¥ô ˆ∏Kß\¯∂ ¥ô ˙∏NßH¸∂ ¥ô ˛∏Qß4 ∂ ¥ô ∏Kß∂ ¥ô ∏Nß∂ ¥ô 
+∏Qß Ú∂ ¥ô ∏Kß ‹∂ ¥ô ∏Nß ∆∂ ¥ô ∏Qß ∞∂ ¥ô ∏Kß ö∂ ¥ô ∏Nß Ñ ∂ ¥ô "∏Qß n$∂ ¥ô &∏Kß X(∂ ¥ô *∏Nß B,∂ ¥ô .∏Qß ,0∂ ¥ô T∏Kß 4∂ ¥ô 6∏Nª üY∑ °:∂ ¢ª Y∑ 	V∂ ∂ X∂ ∂ ∂ ®∏ ´*∂ Ø
+a≥ ß (ª üY∑ °:∂ ¢Z∂ ®∏ ´*∂ Ø
+a≥ ß å-\∂ …ô +ª üY∑ °:∂ ¢^∂ ®∏ ´*∂ Ø
+a≥ ß Z-`∂ …ô +ª üY∑ °:∂ ¢b∂ ®∏ ´*∂ Ø
+a≥ ß (ª üY∑ °:∂ ¢A∂ ®∏ ´*∂ Ø
+a≥ ±     É y  . À   n  o  s  t  w  u  v % z ) { 2 | 8 } ? ~ D  M Ç Y Ö a á s ä } å Ñ ç ä é ì ê † í ß ì ≠ î ∂ ñ √ ò   ô – ö Ÿ ú Ê ù Ì û Û ü ¸ °	 ¢ £ § ¶, ß3 ®9 ©B ´O ¨V ≠\ Æe ∞r ±y ≤ ≥à µï ∂ú ∑¢ ∏´ ∫π ª¡ º« Ω– øﬁ ¿Ê ¡Ï ¬ı ƒ ≈ ∆ « …(  0 À6 Ã? ŒM œU –[ —d ”r ‘z ’Ä ÷â ÿó Ÿü ⁄• €Æ ›º ﬁƒ ﬂ  ‡” ‚· „È ‰Ô Â¯ Á Ë È Í Ï+ Ì3 Ó9 ÔB ÒP ÚX Û^ Ùg ˆu ˜} ¯É ˘å ˚ö ¸¢ ˝® ˛±¥Ω√„ËÒ
+˛',58>KX b$l%v&Ä'ä(î)û*®+≤,º-∆.–/⁄0‰1Ó2¯3456!7,879B:M;X<c=n>y?Ñ@èAöB•C∞DªE∆F—G‹HÁIÚJ˝KLMN)O4P?QGTPUVVvW{XÑ[á\ê]ñ^û`£a¨eπf¬g»h–l’mﬁpÎqÙr˙stuxyz"{*|/}8Äz  ú )  ëè  2 íì  Ñ îï  ß ñï    óï  Ì òï  ôï 3 öï V õï y úï ú ùï ¡ ûï Ê üï  †ï 0 †ï U °ï z ¢ï ü ¢ï ƒ £ï È §ï  •ï 3 ¶ï X ßï } ®ï ¢ ©ï Ω 4íì  aê¸™  s~´g  íì P 4íì ê íì >n¨g Ka≠g XT´g ¶Æ™ ¬ íì Ù íì  íì   9~   7Ø   4∞g ±   Ë  Ñ î≤  ß ñ≤    ó≥  Ì ò≤  ô≤ 3 ö≥ V õ≤ y ú≤ ú ù≥ ¡ û≤ Ê ü≤  †≥ 0 †≤ U °≤ z ¢≥ ü ¢≤ ƒ £≤ È §≥  •≤ 3 ¶≤ X ß≥ } ®≤ ¢ ©≤ ê   s :ˇ   j µ  É	*˝ E¥ µ""""""""$$$$$$$$$$$$$$˘ <¸ C¥˛ = µ µ µ?ˇ $  j µ  11$µ   
+ ∂∏∫º 	 ≠ Æ x  #  	   “dLª Y+∑ M,∂ "¿ &N-f∂ *-h/∂ 1-∂jª MY∑ O*∂n:-∂r:ªvY≤x∑~:∂Å∂Ñ∂áß :∂áß :∂äø∆ &∂éß :∆ ∂éß :∂äø-∂ 56 »† ≤ pë∂ {ß ≤ pª Y∑ 	v∂ ∂ x∂ ∂ {±  K W _à a f ià = u Çà â é ëà y   N   è ê ë í ì %î *ó 7ö Kõ Rú Wù _ö uù Çö ù† ££ ´§ ∑¶ —®z   R  K *æø  = `¿¡    “íì    Œâg   ≈äã   Ωåç  7 õ¬g  £ /év ê   s 
+ˇ _  ü µ  & µèv àˇ 	  ü µ  & µèvà à˘ Làˇ   ü µ  & µèà à˘ ¸ µ    ∂ 	 — “ x   Ó     FªìY∑ïLª 9YªñY*∑ò∑ DM,∂ôô +,∂ G∂úWßˇ,∂ Jß N,∂ Jß :-∂ä-ø+∞   + 2à 3 7 :à y      ¥ ∂ ∑ ∏ +∫ 2∂ Dªz       ,√Å    Fƒg    >≈ï ±      >≈≤ ê   * ˝ ì 9Fàˇ   µì 9à à˘ µ    ∂∆   « 	M 4 x   ´     AªüY*∑°Mª¢Y,∑§NªvY-∑ß:ª Y∑ 	™∂ +∂ ∂ ∂Å∂Ñ∂á±   y      » 	…   À 6Ã ;Õ @Œz   4    Aƒg     A¨g  	 8»…   . À   $æø µ    ∂ 	 ’ ÷ x   §     6ª üY∑ °N-∂ ¢∏¨*∂≤dd`ákc∏µé6-*∂π¿ µ∂ ®-∏ ´±   y      € ‹ › $ﬁ 1ﬂ 5‡z   *    6Ãï     6Ø    .íì  $ ∞v ±       6Ã≤  µ    ∂∆   Õ 	 › “ x  8     ·ªìY∑ïLªìY∑ïM∏ΩN-∂√:*∂«:πÕ :”π’ :6π€ ¢ úπ‡ :	+ª‰Y∑Ê∂úW	πÁ :
+6
+π€ ¢ g
+π‡ :πÌ † KπÒ :∆ =πÌ † 2,πı ∂úWπ¯ ˚∂ …ô +∂π¿‰π˝ ∂ ÑßˇìÑßˇ^,∞   y   Z   Ô  Ú Û Ù "ˆ +˜ 7˘ F˙ Q¸ ]˛ f  u Ä ã î § ∞
+ ¿ ”  Ÿ˘ ﬂz   é  î ?Œœ  Ä S–œ  i pv  Q à‘œ 	 f s—“ 
+ : • ˝v    ·ƒg    Ÿ”ï   —‘ï   Õ’÷   «◊ÿ  " øŸ⁄  + ∂€‹  7 ™›“ ±      Ÿ”ﬁ   —‘≤ ê   5 ˇ : 	 µììæ»Œ÷‹  ˛ .Ë‹˚ i¯ ˙ µ    ∂∏∫∆   « 	P 4 x  ^    ~ªìY∑ïM∏ΩN-∂√:*∂«:πÕ :”π’ :6π€ ¢ øπ‡ :	,ª‰Y∑Ê∂úW	πÁ :
+6
+π€ ¢ Ñ
+π‡ :πÌ † BπÒ :∆ 1πÌ † &π¯ ˚∂ …ô ,∂π¿‰π˝ ∂ ß )	¿÷:˚π’ π :,∂π¿‰∂ Ñßˇv≤ p∂Ñßˇ;”π :π
+ W˚π :		π
+ W	+π π
+ W∏:
+
+∂:∂!&(∂!ª*Y∑,:ª/YªüY*∑°∑1:∂4±   y   ñ %  " $ & ( * #, // >0 I2 U4 ^6 m7 x9 É; å= ú? ¨@ øC ¬D …E ⁄G Ë6 ÓJ Ù/ ˙NOQR&S6U;VBWMXXYcZt[}\z   ﬁ  å 3Œœ  …  Ì‹  ⁄ ¸g  x p–œ  a çv  I ´‘œ 	 ^ ñ—“ 
+ 2 » ˝v   ~ƒg    ~¨g  v”ï  r’÷  l◊ÿ  dŸ⁄  #[€‹  /O›“  xﬂ‹  b‡‹ 	; C·‚ 
+B <„‰ c ÂÊ t 
+ÁË ±     v”ﬁ ê   < ˇ 2 	 µ µìæ»Œ÷‹  ˛ .Ë‹¸ ]Ë˙ %˙ ¯ µ   
+ º∏∂∫ 	 ‰ “ x   É     /ª8Y∑:∂;∂?LªñY*∑òM+,C∂E¿CNªìY-∏H∑N∞   y      i j k #lz   *    /ƒg    !ÖÜ   ÈÍ  # ÎD µ    Ï∆   Ó 	bc x   q     ª8Y∑:∂;∂Q∂?L+*∂nM,∞   y      y z {z        ›ï    ÖÜ   Ôg ±       ›≥  µ    Ï∆    	 Á ÷ x   ß     9ª üY∑ °N-∂ ¢∏¨*∂≤dd`ákc∏µé6-*∂π¿T∂V∂ ®-∏ ´±   y      à â ä $ã 4å 8çz   *    9Ãï     9Ø    1íì  $ ∞v ±       9Ã≥  µ    ∂∆   Ò 	S 4 x   π     9*∏ ‚M,ªTY+∑Y∂úWªüY*∑°N-∂ZWª]Y-∑_:,∏`∂d∂e±   y   "   ö õ ù û  † *° 3¢ 8£z   4    9ƒg     9¨g   4›ï   Ú…  * ÛÙ ±      4›≥ µ    ∂ ı  x         	≥ ±   y       / ˆ   ˜
